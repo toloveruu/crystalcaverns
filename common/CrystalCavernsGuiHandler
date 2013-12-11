@@ -1,0 +1,35 @@
+package crystalcaverns.common;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import cpw.mods.fml.common.network.IGuiHandler;
+import crystalcaverns.common.freezer.ContainerFreezer;
+import crystalcaverns.common.freezer.GuiFreezer;
+import crystalcaverns.common.freezer.TileEntityFreezer;
+
+public class CrystalCavernsGuiHandler implements IGuiHandler {
+	@Override
+	public Object getServerGuiElement(int id, EntityPlayer player, World world,
+			int x, int y, int z) {
+		TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
+		switch (id) {
+		case 0:
+			return new ContainerFreezer((TileEntityFreezer) tile_entity,
+					player.inventory);
+		}
+		return null;
+	}
+
+	@Override
+	public Object getClientGuiElement(int id, EntityPlayer player, World world,
+			int x, int y, int z) {
+		TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
+		switch (id) {
+		case 0:
+			return new GuiFreezer(player.inventory,
+					(TileEntityFreezer) tile_entity);
+		}
+		return null;
+	}
+}

@@ -17,6 +17,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -40,6 +41,9 @@ public class CrystalCaverns {
 	/** Important Stuff */
 	@Instance("crystalCaverns")
 	public static CrystalCaverns instance;
+	
+	@SidedProxy(clientSide = "crystalcaverns.common.ClientProxy", serverSide = "crystalcaverns.common.CommonProxy")
+	public static CommonProxy proxy;
 	
 	private CrystalCavernsGuiHandler guiHandler = new CrystalCavernsGuiHandler();
 	public static final String modid = "crystalCaverns";

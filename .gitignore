@@ -61,7 +61,7 @@
 +*.obj
 +*.pch
 +*.pdb
-+*.pgc
++*.pgc 
 +*.pgd
 +*.rsp
 +*.sbr

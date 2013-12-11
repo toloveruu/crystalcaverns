@@ -1,0 +1,195 @@
+package crystalcaverns.common;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelSlime;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import crystalcaverns.common.block.*;
+import crystalcaverns.common.entity.*;
+import crystalcaverns.common.fluid.*;
+import crystalcaverns.common.freezer.*;
+import crystalcaverns.common.item.*;
+import crystalcaverns.common.model.*;
+import crystalcaverns.common.render.*;
+import crystalcaverns.common.tool.ToolCrystalLance;
+import crystalcaverns.common.world.WorldProviderCrystalCaverns;
+import crystalcaverns.common.world.biome.BiomeGenCrystalCaverns;
+
+@Mod(modid = CrystalCaverns.modid, name = "Crystal Isles", version = "1.0")
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
+public class CrystalCaverns {
+	/** Important Stuff */
+	@Instance("crystalCaverns")
+	public static CrystalCaverns instance;
+	
+	private CrystalCavernsGuiHandler guiHandler = new CrystalCavernsGuiHandler();
+	public static final String modid = "crystalCaverns";
+
+	/** Dimension */
+	public static int crystalCavernsId = 2;
+
+	public static BiomeGenBase crystalCaverns;
+
+	/** Blocks */
+	public static int crystalId = 200;
+	public static int crackedCrystalId = 201;
+	public static int crystalizedObsidianId = 202;
+	public static int crystalPortalId = 203;
+	public static int crystalFireId = 204;
+	public static int crystalLavaId = 205;
+	public static int crystalSandId = 206;
+	public static int freezingSandId = 207;
+	public static int frostyGlowstoneId = 208;
+	public static int crystariumId = 209;
+	public static int crystariumTorchId = 210;
+	public static int crystariumBlockId = 211;
+	public static int frostiteId = 212;
+	public static int frostiteBlockId = 213;
+	public static int freezerIdleId = 230;
+	public static int freezerFreezingId = 231;
+
+	public static final Block crystal = new BlockCrystal(crystalId, Material.rock).setUnlocalizedName("crystal");
+	public static final Block crackedCrystal = new BlockCrackedCrystal(crackedCrystalId, Material.rock).setUnlocalizedName("crackedCrystal");
+	public static final Block crystalizedObsidian = new BlockCrystalizedObsidian(crystalizedObsidianId, Material.rock).setUnlocalizedName("crystalizedObsidian");
+	public static final BlockCrystalPortal crystalPortal = (BlockCrystalPortal) new BlockCrystalPortal(crystalPortalId).setUnlocalizedName("crystalCavernsPortal");
+	public static final BlockCrystalFire crystalFire = (BlockCrystalFire) new BlockCrystalFire(crystalFireId).setUnlocalizedName("crystalFire_0");
+	public static final Fluid crystalLavaFluid = new FluidCrystalLava();
+	public static final Block crystalLava = new BlockCrystalLava(crystalLavaId, crystalLavaFluid, Material.lava).setUnlocalizedName("crystalLavaFlowing");
+	public static final Block crystalSand = new BlockCrystalSand(crystalSandId, Material.sand).setUnlocalizedName("crystalSand");
+	public static final Block freezingSand = new BlockFreezingSand(freezingSandId, Material.sand).setUnlocalizedName("freezingSand");
+	public static final Block frostyGlowstone = new BlockFrostyGlowstone(frostyGlowstoneId, Material.rock).setUnlocalizedName("frostyGlowstone");
+	public static final Block crystarium = new BlockCrystarium(crystariumId, Material.rock).setUnlocalizedName("crystarium");
+	public static final Block crystariumTorch = new BlockCrystariumTorch(crystariumTorchId).setUnlocalizedName("crystariumTorch");
+	public static final Block crystariumBlock = new BlockCrystariumBlock(crystariumBlockId, Material.rock).setUnlocalizedName("crystariumBlock");
+	public static final Block frostite = new BlockFrostite(frostiteId, Material.rock).setUnlocalizedName("frostite");
+	public static final Block frostiteBlock = new BlockFrostiteBlock(frostiteBlockId, Material.rock).setUnlocalizedName("frostiteBlock");
+	public static final Block freezerIdle = new BlockFreezer(freezerIdleId, false).setUnlocalizedName("freezerSide");
+	
+	/** Items */
+	public static int frostyGlowstoneDustId = 1844;
+	public static int crystariumDustId = 1845;
+	public static int crystariumCrystalId = 1846;
+	public static int frostiteDustId = 1847;
+	public static int frostiteCrystalId = 1848;
+	public static int icyWheatId = 1860;
+	public static int icyCocoaBeansId = 1861;
+	public static int icyCookieId = 1862;
+	
+	public static final Item frostyGlowstoneDust = new ItemFrostyGlowstoneDust(frostyGlowstoneDustId).setUnlocalizedName("frostyGlowstoneDust");
+	public static final Item crystariumDust = new ItemCrystariumDust(crystariumDustId).setUnlocalizedName("crystariumDust");
+	public static final Item crystariumCrystal = new ItemCrystariumCrystal(crystariumCrystalId).setUnlocalizedName("crystariumCrystal");
+	public static final Item frostiteDust = new ItemFrostiteDust(frostiteDustId).setUnlocalizedName("frostiteDust");
+	public static final Item frostiteCrystal = new ItemFrostiteCrystal(frostiteCrystalId).setUnlocalizedName("frostiteCrystal");
+	public static final Item icyWheat = new ItemIcyWheat(icyWheatId).setUnlocalizedName("icyWheat");
+	public static final Item icyCocoaBeans = new ItemIcyCocoaBeans(icyCocoaBeansId).setUnlocalizedName("icyCocoaBeans");
+	public static final Item icyCookie = new ItemIcyCookie(icyCookieId, 4, 1.0F, true).setUnlocalizedName("icyCookie");
+	
+	/** Tools */
+	public static int crystalIgniterId = 1744;
+	
+	public static final Item crystalIgniter = new ToolCrystalLance(crystalIgniterId).setUnlocalizedName("crystalIgniter");
+
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		/** Dimension */
+		DimensionManager.registerProviderType(crystalCavernsId, WorldProviderCrystalCaverns.class, true);
+		DimensionManager.registerDimension(crystalCavernsId, crystalCavernsId);
+
+		crystalCaverns = new BiomeGenCrystalCaverns(25);
+
+		/** Blocks */
+		GameRegistry.registerBlock(crystal, "crystal");
+		GameRegistry.registerBlock(crackedCrystal, "crackedCrystal");
+		GameRegistry.registerBlock(crystalizedObsidian, "crystalizedObsidian");
+		GameRegistry.registerBlock(crystalPortal, "crystalCavernsPortal");
+		GameRegistry.registerBlock(crystalFire, "crystalFire");
+		GameRegistry.registerBlock(crystalLava, "crystalLava");
+		GameRegistry.registerBlock(crystalSand, "crystalSand");
+		GameRegistry.registerBlock(freezingSand, "freezingSand");
+		GameRegistry.registerBlock(frostyGlowstone, "frostyGlowstone");
+		GameRegistry.registerBlock(crystarium, "crystarium");
+		GameRegistry.registerBlock(crystariumTorch, "crystariumTorch");
+		GameRegistry.registerBlock(crystariumBlock, "crystariumBlock");
+		GameRegistry.registerBlock(frostite, "frostite");
+		GameRegistry.registerBlock(frostiteBlock, "frostiteBlock");
+		GameRegistry.registerBlock(freezerIdle, "freezerIdle");
+        GameRegistry.registerTileEntity(TileEntityFreezer.class,"tileEntityFreezer");
+        NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
+		RenderingRegistry.registerBlockHandler(RenderFreezer.INSTANCE);
+		
+		GameRegistry.addRecipe(new ItemStack(freezerIdle), new Object[] {
+            "!@!", "@&@", "!@!", '!', Block.stone, '@', Block.snow, '&', Block.furnaceIdle });
+
+		LanguageRegistry.addName(crystal, "Crystal");
+		LanguageRegistry.addName(crackedCrystal, "Cracked Crystal");
+		LanguageRegistry.addName(crystalizedObsidian, "Crystalized Obsidian");
+		LanguageRegistry.addName(crystalPortal, "Crystal Portal");
+		LanguageRegistry.addName(crystalFire, "Crystal Fire");
+		LanguageRegistry.addName(crystalLava, "Crystal Lava");
+		LanguageRegistry.addName(crystalSand, "Crystal Sand");
+		LanguageRegistry.addName(freezingSand, "Freezing Sand");
+		LanguageRegistry.addName(frostyGlowstone, "Frosty Glowstone");
+		LanguageRegistry.addName(crystarium, "Crystarium");
+		LanguageRegistry.addName(crystariumTorch, "Crystarium Torch");
+		LanguageRegistry.addName(crystariumBlock, "Crystarium Block");
+		LanguageRegistry.addName(frostite, "Frostite");
+		LanguageRegistry.addName(frostiteBlock, "Frostite Block");
+		LanguageRegistry.addName(freezerIdle, "Freezer");
+
+		/** Items */
+		GameRegistry.registerItem(crystalIgniter, "crystalIgniter");
+		GameRegistry.registerItem(frostyGlowstoneDust, "frostyGlowstoneDust");
+		GameRegistry.registerItem(crystariumDust, "crystariumDust");
+		GameRegistry.registerItem(crystariumCrystal, "crystariumCrystal");
+		GameRegistry.registerItem(frostiteDust, "frostiteDust");
+		GameRegistry.registerItem(frostiteCrystal, "frostiteCrystal");
+		GameRegistry.registerItem(icyWheat, "icyWheat");
+		GameRegistry.registerItem(icyCocoaBeans, "icyCocoaBeans");
+		GameRegistry.registerItem(icyCookie, "icyCookie");
+
+		GameRegistry.addRecipe(new ItemStack(icyCookie), new Object[] {
+            "!@!", '!', icyWheat, '@', icyCocoaBeans });
+		
+		LanguageRegistry.addName(crystalIgniter, "Crystal Igniter");
+		LanguageRegistry.addName(frostyGlowstoneDust, "Frosty Glowstone Dust");
+		LanguageRegistry.addName(crystariumDust, "Crystarium Dust");
+		LanguageRegistry.addName(crystariumCrystal, "Crystarium Crystal");
+		LanguageRegistry.addName(frostiteDust, "Frostite Dust");
+		LanguageRegistry.addName(frostiteCrystal, "Frostite Crystal");
+		LanguageRegistry.addName(icyWheat, "Icy Wheat");
+		LanguageRegistry.addName(icyCocoaBeans, "Icy Cocoa Beans");
+		LanguageRegistry.addName(icyCookie, "Icy Cookie");
+
+		/** Mobs */
+		EntityRegistry.registerModEntity(EntityIceCube.class, "iceCube", 1, this, 120, 4, true);
+		EntityRegistry.registerModEntity(EntityFrozen.class, "frozen", 2, this, 120, 4, true);
+		
+		EntityRegistry.addSpawn(EntityIceCube.class, 20, 15, 35, EnumCreatureType.monster, crystalCaverns);
+		EntityRegistry.addSpawn(EntityFrozen.class, 20, 15, 35, EnumCreatureType.monster, crystalCaverns);
+		
+		RenderingRegistry.registerEntityRenderingHandler(EntityIceCube.class, new RenderIceCube(new ModelIceCube(16), new ModelIceCube(0), 0.25F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityFrozen.class, new RenderFrozen(new ModelBiped(), 0.4F));
+		
+		LanguageRegistry.instance().addStringLocalization("entity.crystalCaverns.iceCube.name", "Ice Cube");
+		LanguageRegistry.instance().addStringLocalization("entity.crystalCaverns.frozen.name", "Frozen");
+		}
+}

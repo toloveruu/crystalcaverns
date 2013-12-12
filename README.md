@@ -46,4 +46,4 @@ Armorsets (Helmet, Chestplate, Leggings, Boots):
 Mobs:
 - Ice Cube
 - Frozen
-- Frost
+- Crystal Crawler

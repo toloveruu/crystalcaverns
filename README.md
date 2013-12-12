@@ -24,16 +24,17 @@ Items:
 - Crystarium Crystal
 - Frostite Dust
 - Frostite Crystal
+- Iciclite
 - Icy Wheat
 - Icy Cocoa Beans
 - Icy Cookie
 
-Toolsets (Pickaxe, Axe, Shovel, Hoe):
+Toolsets (Pickaxe, Axe, Shovel):
 - Crystarium Toolset
 - Frostite Toolset
 - Iciclite Toolset
 
-Weaponsets (Sword, Bow, Throwing Star):
+Weaponsets (Sword, Throwing Star):
 - Crystarium Weaponset
 - Frostite Weaponset
 - Iciclite Weaponset
